@@ -1,6 +1,6 @@
 <article class="flex flex-col shadow my-4">
     <!-- Article Image -->
-    <a href="#" class="hover:opacity-75">
+    <a href="{{ route('home.show',$post->slug) }}" class="hover:opacity-75">
         <img src="{{ $post->getThumbnail() }}">
     </a>
     <div class="bg-white flex flex-col justify-start p-6">
@@ -10,11 +10,11 @@
         @endforeach
         <a href="#" class="text-3xl font-bold hover:text-gray-700 pb-4">{{ $post->title }}</a>
         <p href="#" class="text-sm pb-3">
-            By <a href="#" class="font-semibold hover:text-gray-800">{{ $post->user->name }}</a>, Published on {{
-            $post->published_at?->format('F jS Y') }}
+            By <a href="#" class="font-semibold hover:text-gray-800">{{ $post->user->name }}</a>, Published on
+            {{$post->published_at?->format('F jS Y') }}
         </p>
-        <a href="#" class="pb-6">{!! Str::words($post->body, 20, '...') !!}</a>
-        <a href="#" class="uppercase text-gray-800 hover:text-black">Continue Reading <i
-                class="fas fa-arrow-right"></i></a>
+        <a href="{{ route('home.show',$post->slug) }}" class="pb-6">{!! Str::words($post->body, 20, '...') !!}</a>
+        <a href="{{ route('home.show',$post->slug) }}" class="uppercase text-gray-800 hover:text-black">Continue Reading
+            <i class="fas fa-arrow-right"></i></a>
     </div>
 </article>

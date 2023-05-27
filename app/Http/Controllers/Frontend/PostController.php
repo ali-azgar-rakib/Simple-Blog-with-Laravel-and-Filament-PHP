@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostController extends Controller
 {
@@ -14,7 +17,11 @@ class PostController extends Controller
      */
     public function index(): View
     {
-        $posts = Post::where('is_active', 1)->orderBy('published_at', 'desc')->paginate(2);
+        $posts = Post::where('is_active', 1)
+            ->where('published_at', '!=', null)
+            ->whereDate('published_at', '<=', Carbon::now())
+            ->orderBy('published_at', 'desc')
+            ->paginate(5);
         return view('home', ['posts' => $posts]);
     }
 
@@ -37,9 +44,24 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post): View
     {
-        //
+        if (!$post->is_active || $post->published_at > Carbon::now()) {
+            throw new NotFoundHttpException();
+        }
+
+        $prev = Post::where('is_active', 1)
+            ->whereNotNull('published_at')
+            ->inRandomOrder()
+            ->limit(1)
+            ->first();
+        $next = Post::where('is_active', 1)
+            ->whereNotNull('published_at')
+            ->inRandomOrder()
+            ->limit(1)
+            ->first();
+
+        return view('post.view', compact('post', 'prev', 'next'));
     }
 
     /**
