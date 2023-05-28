@@ -70,5 +70,5 @@
         </div>
 
     </section>
-
+    <x-sidebar :categories="$categories"></x-sidebar>
 </x-app-layout>

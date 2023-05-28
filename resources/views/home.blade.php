@@ -17,6 +17,6 @@
         {{ $posts->onEachSide(2)->links() }}
     </section>
 
-    <x-sidebar></x-sidebar>
+    <x-sidebar :categories="$categories"></x-sidebar>
 
 </x-app-layout>
